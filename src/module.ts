@@ -3,9 +3,9 @@
  */
 import { ANALYZE_FOR_ENTRY_COMPONENTS, APP_INITIALIZER, ComponentFactoryResolver, Inject, Injector, ModuleWithProviders, NgModule, NgZone, Optional } from '@angular/core';
 import { APP_BASE_HREF, HashLocationStrategy, Location, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
-import { DOCUMENT, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 
 /**
  * Import Other
@@ -387,12 +387,12 @@ import { VirtualScroll } from './components/virtual-scroll/virtual-scroll';
 })
 export class IonicModule {
 
-    /**
-     * Set the root app component for you IonicModule
-     * @param {any} appRoot The root AppComponent for this app.
-     * @param {any} config Config Options for the app. Accepts any config property.
-     * @param {any} deepLinkConfig Any configuration needed for the Ionic Deeplinker.
-     */
+  /**
+   * Set the root app component for you IonicModule
+   * @param {any} appRoot The root AppComponent for this app.
+   * @param {any} config Config Options for the app. Accepts any config property.
+   * @param {any} deepLinkConfig Any configuration needed for the Ionic Deeplinker.
+   */
   static forRoot(appRoot: any, config: any = null, deepLinkConfig: DeepLinkConfig = null): ModuleWithProviders {
     return {
       ngModule: IonicModule,
@@ -401,20 +401,20 @@ export class IonicModule {
         { provide: AppRootToken, useValue: appRoot },
         { provide: ConfigToken, useValue: config },
         { provide: DeepLinkConfigToken, useValue: deepLinkConfig },
-        { provide: APP_BASE_HREF, useValue: '/'},
+        { provide: APP_BASE_HREF, useValue: '/' },
 
         // useFactory: user values
         { provide: PlatformConfigToken, useFactory: providePlatformConfigs },
 
         // useFactory: ionic core providers
-        { provide: Platform, useFactory: setupPlatform, deps: [ DOCUMENT, PlatformConfigToken, NgZone ] },
-        { provide: Config, useFactory: setupConfig, deps: [ ConfigToken, Platform ] },
+        { provide: Platform, useFactory: setupPlatform, deps: [DOCUMENT, PlatformConfigToken, NgZone] },
+        { provide: Config, useFactory: setupConfig, deps: [ConfigToken, Platform] },
 
         // useFactory: ionic app initializers
-        { provide: APP_INITIALIZER, useFactory: registerModeConfigs, deps: [ Config ], multi: true },
-        { provide: APP_INITIALIZER, useFactory: setupProvideEvents, deps: [ Platform, DomController ], multi: true },
-        { provide: APP_INITIALIZER, useFactory: setupTapClick, deps: [ Config, Platform, DomController, App, GestureController ], multi: true },
-        { provide: APP_INITIALIZER, useFactory: setupPreloading, deps: [ Config, DeepLinkConfigToken, ModuleLoader, NgZone ], multi: true },
+        { provide: APP_INITIALIZER, useFactory: registerModeConfigs, deps: [Config], multi: true },
+        { provide: APP_INITIALIZER, useFactory: setupProvideEvents, deps: [Platform, DomController], multi: true },
+        { provide: APP_INITIALIZER, useFactory: setupTapClick, deps: [Config, Platform, DomController, App, GestureController], multi: true },
+        { provide: APP_INITIALIZER, useFactory: setupPreloading, deps: [Config, DeepLinkConfigToken, ModuleLoader, NgZone], multi: true },
 
         // useClass
         { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
@@ -443,10 +443,10 @@ export class IonicModule {
         ToastController,
         TransitionController,
 
-        { provide: ModuleLoader, useFactory: provideModuleLoader, deps: [NgModuleLoader, Injector]},
-        { provide: LocationStrategy, useFactory: provideLocationStrategy, deps: [ PlatformLocation, [new Inject(APP_BASE_HREF), new Optional()], Config ] },
-        { provide: UrlSerializer, useFactory: setupUrlSerializer, deps: [ App, DeepLinkConfigToken ] },
-        { provide: DeepLinker, useFactory: setupDeepLinker, deps: [ App, UrlSerializer, Location,  ModuleLoader, ComponentFactoryResolver ] },
+        { provide: ModuleLoader, useFactory: provideModuleLoader, deps: [NgModuleLoader, Injector] },
+        { provide: LocationStrategy, useFactory: provideLocationStrategy, deps: [PlatformLocation, [new Inject(APP_BASE_HREF), new Optional()], Config] },
+        { provide: UrlSerializer, useFactory: setupUrlSerializer, deps: [App, DeepLinkConfigToken] },
+        { provide: DeepLinker, useFactory: setupDeepLinker, deps: [App, UrlSerializer, Location, ModuleLoader, ComponentFactoryResolver] },
       ]
     };
   }
@@ -503,8 +503,8 @@ export class IonicPageModule {
  * @hidden
  */
 export function provideLocationStrategy(platformLocationStrategy: PlatformLocation,
-                                        baseHref: string, config: Config) {
+  baseHref: string, config: Config) {
   return config.get('locationStrategy') === 'path' ?
-         new PathLocationStrategy(platformLocationStrategy, baseHref) :
-         new HashLocationStrategy(platformLocationStrategy, baseHref);
+    new PathLocationStrategy(platformLocationStrategy, baseHref) :
+    new HashLocationStrategy(platformLocationStrategy, baseHref);
 }

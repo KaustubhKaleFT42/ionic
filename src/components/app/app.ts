@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Optional } from '@angular/core';
-import { DOCUMENT, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 import { IonicApp } from './app-root';
 import * as Constants from './app-constants';
@@ -147,7 +148,7 @@ export class App {
     if (this._clickBlock) {
       if (isEnabled) {
         // disable the click block if it's enabled, or the duration is tiny
-        this._clickBlock.activate(false,  CLICK_BLOCK_BUFFER_IN_MILLIS, minDuration);
+        this._clickBlock.activate(false, CLICK_BLOCK_BUFFER_IN_MILLIS, minDuration);
 
       } else {
         // show the click block for duration + some number
@@ -223,16 +224,16 @@ export class App {
   getActiveNavs(rootNavId?: string): NavControllerBase[] {
     const portal = this._appRoot._getPortal(Constants.PORTAL_MODAL);
     if (portal.length() > 0) {
-      return <NavControllerBase[]> findTopNavs(portal);
+      return <NavControllerBase[]>findTopNavs(portal);
     }
     if (!this._rootNavs || !this._rootNavs.size) {
       return [];
     }
     if (this._rootNavs.size === 1) {
-      return <NavControllerBase[]> findTopNavs(this._rootNavs.values().next().value);
+      return <NavControllerBase[]>findTopNavs(this._rootNavs.values().next().value);
     }
     if (rootNavId) {
-      return <NavControllerBase[]> findTopNavs(this._rootNavs.get(rootNavId));
+      return <NavControllerBase[]>findTopNavs(this._rootNavs.get(rootNavId));
     }
     // fallback to just using all root names
     let activeNavs: NavigationContainer[] = [];
@@ -240,7 +241,7 @@ export class App {
       const topNavs = findTopNavs(nav);
       activeNavs = activeNavs.concat(topNavs);
     });
-    return <NavControllerBase[]> activeNavs;
+    return <NavControllerBase[]>activeNavs;
   }
 
   getRootNav(): any {
@@ -360,7 +361,7 @@ export class App {
       const poppableNavs = activeNavs.map(activeNav => getPoppableNav(activeNav)).filter(nav => !!nav);
       poppableNavs.forEach(poppable => {
         const topViewController = poppable.last();
-        if (poppable._isPortal || (topViewController && poppable.length() > 1 && (!mostRecentVC || topViewController._ts >=  mostRecentVC._ts))) {
+        if (poppable._isPortal || (topViewController && poppable.length() > 1 && (!mostRecentVC || topViewController._ts >= mostRecentVC._ts))) {
           mostRecentVC = topViewController;
           navToPop = poppable;
         }
@@ -393,7 +394,7 @@ export class App {
         self._didScroll = false;
         return;
       }
-      const active = <HTMLElement> self._plt.getActiveElement();
+      const active = <HTMLElement>self._plt.getActiveElement();
       if (!active) {
         return;
       }
